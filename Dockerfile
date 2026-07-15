@@ -34,6 +34,7 @@ RUN apt-get update \
        python3-venv \
     && python3 -m venv /opt/hermes \
     && /opt/hermes/bin/pip install --no-cache-dir "hermes-agent[acp]==${HERMES_VERSION}" \
+    && ln -s /opt/hermes/bin/hermes /usr/local/bin/hermes \
     && /opt/hermes/bin/hermes acp --version \
     && /opt/hermes/bin/hermes acp --check \
     && rm -rf /var/lib/apt/lists/*
