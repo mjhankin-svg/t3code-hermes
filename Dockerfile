@@ -53,6 +53,9 @@ RUN apt-get update \
        /usr/local/bin/yarnpkg \
     && rm -rf /var/lib/apt/lists/*
 
+RUN getent group 100 >/dev/null \
+    && printf 't3:x:99:100:T3 Code:/state/home:/bin/bash\n' >> /etc/passwd
+
 WORKDIR /app
 COPY --from=builder --chown=99:100 /out/t3 /app
 
