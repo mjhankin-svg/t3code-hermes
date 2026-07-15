@@ -78,6 +78,7 @@ overrides:
   "@effect/atom-react": "catalog:"
   "@effect/platform-bun": "catalog:"
   "@effect/platform-node": "catalog:"
+  "@effect/platform-node>undici": 8.5.0
   "@effect/platform-node-shared": "catalog:"
   "@effect/sql-pg": "catalog:"
   "@effect/sql-sqlite-bun": "catalog:"

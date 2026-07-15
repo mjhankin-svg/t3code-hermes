@@ -10,7 +10,9 @@ RUN apt-get update \
     && corepack prepare pnpm@10.24.0 --activate
 
 COPY . .
-RUN pnpm install --frozen-lockfile && pnpm run build
+RUN pnpm install --frozen-lockfile \
+    && pnpm run build \
+    && pnpm --config.allowUnusedPatches=true --filter t3 deploy --prod --legacy /out/t3
 
 FROM node:24.13.1-bookworm-slim AS runtime
 
@@ -24,6 +26,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     T3_SUPPRESS_PAIRING_LOG=1
 
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y \
        ca-certificates \
        curl \
@@ -34,13 +37,24 @@ RUN apt-get update \
        python3-venv \
     && python3 -m venv /opt/hermes \
     && /opt/hermes/bin/pip install --no-cache-dir "hermes-agent[acp]==${HERMES_VERSION}" \
+    && /opt/hermes/bin/pip install --no-cache-dir --upgrade \
+       "cryptography>=48.0.1" \
+       "setuptools>=78.1.1" \
     && ln -s /opt/hermes/bin/hermes /usr/local/bin/hermes \
     && /opt/hermes/bin/hermes acp --version \
     && /opt/hermes/bin/hermes acp --check \
+    && rm -rf \
+       /opt/yarn-* \
+       /usr/local/lib/node_modules \
+       /usr/local/bin/corepack \
+       /usr/local/bin/npm \
+       /usr/local/bin/npx \
+       /usr/local/bin/yarn \
+       /usr/local/bin/yarnpkg \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY --from=builder --chown=99:100 /src /app
+COPY --from=builder --chown=99:100 /out/t3 /app
 
 RUN mkdir -p /state/hermes /state/home /state/t3 /workspace \
     && chown -R 99:100 /state /workspace
@@ -49,5 +63,5 @@ USER 99:100
 
 EXPOSE 3773
 
-ENTRYPOINT ["node", "/app/apps/server/dist/bin.mjs"]
+ENTRYPOINT ["node", "/app/dist/bin.mjs"]
 CMD ["start", "--mode", "web", "--host", "127.0.0.1", "--port", "3773", "--no-browser", "/workspace/homelab-infra"]

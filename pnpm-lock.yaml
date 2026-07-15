@@ -51,6 +51,7 @@ overrides:
   '@effect/atom-react': 4.0.0-beta.78
   '@effect/platform-bun': 4.0.0-beta.78
   '@effect/platform-node': 4.0.0-beta.78
+  '@effect/platform-node>undici': 8.5.0
   '@effect/platform-node-shared': 4.0.0-beta.78
   '@effect/sql-pg': 4.0.0-beta.78
   '@effect/sql-sqlite-bun': 4.0.0-beta.78
@@ -9607,8 +9608,8 @@ packages:
     resolution: {integrity: sha512-UDdpiex+mzigiyrXrGbiUaF4HzTNhKbh2vRNFaTMzcqmLIPrZxaCtwo/1TMSuWoM1Xz3WiTo9KdgI3kRqYzJGg==}
     engines: {node: '>=20.18.1'}
 
-  undici@8.3.0:
-    resolution: {integrity: sha512-TkUDgb6tl7KOGZ+7e8E3d2FYgUQgF6z5YypqjWmixVQSQERFcVrVg0ySADm2LVLRh5ljAaHTCR5Fmz3Q34rB7Q==}
+  undici@8.5.0:
+    resolution: {integrity: sha512-xamtWoB1EshgjpmlXd7GGm2VfdDtw1+rD8uhry8pSNW3If6S8E0m2T2+orSKeZXEn/aPJMviCpDBA65WJt8zhg==}
     engines: {node: '>=22.19.0'}
 
   unenv@2.0.0-rc.24:
@@ -11553,7 +11554,7 @@ snapshots:
       effect: 4.0.0-beta.78(patch_hash=c502bc684210b707dfceb87d8fe6ad6843395af6e19cfc02cd65854898bde2c5)
       ioredis: 5.11.0
       mime: 4.1.0
-      undici: 8.3.0
+      undici: 8.5.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -19783,7 +19784,7 @@ snapshots:
 
   undici@7.27.1: {}
 
-  undici@8.3.0: {}
+  undici@8.5.0: {}
 
   unenv@2.0.0-rc.24:
     dependencies:
