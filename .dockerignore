@@ -1,0 +1,13 @@
+.git
+.github
+.plans
+.repos
+.vite
+**/.cache
+**/.turbo
+**/coverage
+**/dist
+**/node_modules
+apps/desktop
+apps/marketing
+apps/mobile

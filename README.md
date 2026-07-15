@@ -1,46 +1,23 @@
-# T3 Code
+# T3 Code: Hermes ACP Edition
 
-T3 Code is a minimal web GUI for coding agents (currently Codex, Claude, Cursor, and OpenCode, more coming soon).
+This deployment-focused fork of [T3 Code](https://github.com/pingdotgg/t3code) uses
+[Hermes Agent](https://github.com/NousResearch/hermes-agent) as its only provider.
+T3 communicates with `hermes acp` over the standard ACP subprocess transport;
+Hermes owns provider authentication, model routing, permissions, and delegation.
 
 ## Installation
 
 > [!WARNING]
-> T3 Code currently supports Codex, Claude, Cursor, and OpenCode.
-> Install and authenticate at least one provider before use:
->
-> - Codex: install [Codex CLI](https://developers.openai.com/codex/cli) and run `codex login`
-> - Claude: install [Claude Code](https://claude.com/product/claude-code) and run `claude auth login`
-> - Cursor: install [Cursor CLI](https://cursor.com/cli) and run `cursor-agent login`
-> - OpenCode: install [OpenCode](https://opencode.ai) and run `opencode auth login`
+> This fork is intended for the provided container image. It expects a dedicated
+> writable `HERMES_HOME`, managed Hermes configuration/authentication, and a
+> workspace mounted at `/workspace`. T3 never receives an OpenAI API key.
 
-### Run without installing
+### Container
 
 ```bash
-npx t3@latest
-```
-
-Tip: Use `npx t3@latest --help` for the full CLI reference.
-
-### Desktop app
-
-Install the latest version of the desktop app from [GitHub Releases](https://github.com/pingdotgg/t3code/releases), or from your favorite package registry:
-
-#### Windows (`winget`)
-
-```bash
-winget install T3Tools.T3Code
-```
-
-#### macOS (Homebrew)
-
-```bash
-brew install --cask t3-code
-```
-
-#### Arch Linux (AUR)
-
-```bash
-yay -S t3code-bin
+docker build -t t3code-hermes .
+docker run --rm --user 99:100 t3code-hermes --version
+docker run --rm --entrypoint /opt/hermes/bin/hermes t3code-hermes acp --check
 ```
 
 ## Some notes
