@@ -1,4 +1,4 @@
-FROM node:24.13.1-bookworm-slim AS builder
+FROM node:24.13.1-bookworm-slim@sha256:a81a03dd965b4052269a57fac857004022b522a4bf06e7a739e25e18bce45af2 AS builder
 
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 WORKDIR /src
@@ -14,7 +14,7 @@ RUN pnpm install --frozen-lockfile \
     && pnpm run build \
     && pnpm --config.allowUnusedPatches=true --filter t3 deploy --prod --legacy /out/t3
 
-FROM node:24.13.1-bookworm-slim AS runtime
+FROM node:24.13.1-bookworm-slim@sha256:a81a03dd965b4052269a57fac857004022b522a4bf06e7a739e25e18bce45af2 AS runtime
 
 ARG HERMES_VERSION=0.18.2
 
@@ -38,8 +38,8 @@ RUN apt-get update \
     && python3 -m venv /opt/hermes \
     && /opt/hermes/bin/pip install --no-cache-dir "hermes-agent[acp]==${HERMES_VERSION}" \
     && /opt/hermes/bin/pip install --no-cache-dir --upgrade \
-       "cryptography>=48.0.1" \
-       "setuptools>=78.1.1" \
+       "cryptography==49.0.0" \
+       "setuptools==83.0.0" \
     && ln -s /opt/hermes/bin/hermes /usr/local/bin/hermes \
     && /opt/hermes/bin/hermes acp --version \
     && /opt/hermes/bin/hermes acp --check \
