@@ -25,6 +25,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     T3CODE_HOME=/state/t3 \
     T3_SUPPRESS_PAIRING_LOG=1
 
+COPY docker/hermes-acp-overlay /tmp/hermes-acp-overlay
+
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y \
@@ -40,10 +42,16 @@ RUN apt-get update \
     && /opt/hermes/bin/pip install --no-cache-dir --upgrade \
        "cryptography==49.0.0" \
        "setuptools==83.0.0" \
+    && /opt/hermes/bin/python /tmp/hermes-acp-overlay/install.py \
+    && HERMES_HOME=/tmp/hermes-routing-test-home \
+       /opt/hermes/bin/python -m unittest discover -v \
+       -s /tmp/hermes-acp-overlay/tests \
     && ln -s /opt/hermes/bin/hermes /usr/local/bin/hermes \
     && /opt/hermes/bin/hermes acp --version \
     && /opt/hermes/bin/hermes acp --check \
     && rm -rf \
+       /tmp/hermes-acp-overlay \
+       /tmp/hermes-routing-test-home \
        /opt/yarn-* \
        /usr/local/lib/node_modules \
        /usr/local/bin/corepack \
